@@ -1,20 +1,31 @@
-import element_data as ed
+def element_data(l):
+	info= {"Molar Mass": l[1], "Z": l[2], "rho":l[3]}
+	return info
 
-file = open("elelib", "r+")
+def isotope_data(line, l, lines):
+	position = lines.index(line)
+	iso_number =int(l[4])
+	isos = []
+	for i in range(iso_number):
+		isos.append(lines[position+1+i].split())
+	return isos
 
-lines = file.readlines()
-
-nice = {}
-
-for line in lines:
+def library_creator(data_input): 
 	
-	l = line.split()
+	file = open(data_input, "r+")
 
-	if line[0].isalpha():
+	lines = file.readlines()
 
-		nice[l[0]] = ed.element_data(l)
-#		nice[l[0]].update({"iso" : ed.isotope_data(line, l, lines)})
+	nice = {}
 
-print(nice)
+	
 
+	for line in lines:
+		l = line.split()
+		if line[0].isalpha():
 
+			nice[l[0]] = element_data(l)
+			nice[l[0]].update({"iso" : isotope_data(line, l, lines)})
+
+	print(nice)
+	return(nice)
