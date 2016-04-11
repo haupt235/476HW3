@@ -7,7 +7,7 @@ def isotope_data(line, l, lines):
 	iso_number =int(l[4])
 	isos = {}
 	for i in range(iso_number):
-		j= lines[position+1+i].split()
+		j= lines[position+1+i].split())
 		isos.update({j[0]: j[1:]})
 	return isos
 
