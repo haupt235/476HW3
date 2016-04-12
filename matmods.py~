@@ -23,5 +23,5 @@ def library_creator(data_input):
 		if line[0].isalpha():
 
 			dandy[l[0]] = mat_data(l)
-			dandy[l[0]].update({"iso" : massfract_data(line, l, lines)})
+			dandy[l[0]].update({"Mass Fraction" : massfract_data(line, l, lines)})
 	return(dandy)

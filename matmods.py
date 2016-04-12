@@ -5,9 +5,10 @@ def mat_data(l):
 def massfract_data(line, l, lines):
 	position = lines.index(line)
 	number_of_ele =int(l[2])
-	masses = []
+	masses = {}
 	for i in range(number_of_ele):
-		masses.append(lines[position+1+i].split())
+		j= lines[position+1+i].split()
+		masses.update({j[0]: j[1:]})
 	return masses
 
 def library_creator(data_input): 
