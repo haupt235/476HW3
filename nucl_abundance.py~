@@ -21,6 +21,7 @@ def nucl_abundance(key):
 		N_i = {}
 		N_final = {}
 		A={}
+		N_total = {}
 		for i in atoms:			
 			wo = atoms[i][0]
 			atom = atoms[i][1]
@@ -31,18 +32,20 @@ def nucl_abundance(key):
 			percent_abundance= 0 
 			N_i[i] = {}
 			A[i] = {}
+			
 			for j in isos:
 				percent_abundance = isos[j][0]
-				A[i].update({'A':j})
-				N_i[i].update({i:float(rho)*float(wo)*float(percent_abundance)/float(molar)})			
-			N_total = dicsum(N_i[i])	
-			for l in N_i:
-				N = N_i[l][i]/N_total
-				N_final.update({l:N})
-				print(N_final)	
-			answer_dict.update({i:atom,'A':A}) 
-		return {key: answer_dict.update({'N':N_final })}
+				A[i].update({j:element_data['Z']})
+				N_i[i].update({j:float(rho)*float(wo)/100*float(percent_abundance)/float(molar)})			
+			N_total[i] = dicsum(N_i[i])	
 		
-			
-			
-		
+		io={}
+		for l in N_i:
+			io[l] = {}
+			for m in N_i:
+				io[l][m] = N_i[l][m]/N_total[l]
+		for n in atoms:
+			answer_dict[n] = {}
+			for m in A[n]:
+				answer_dict[n].update({i+str(j[0]): [A[n][m],j[0],io[n][m]]}) 
+		return {key: answer_dict}
