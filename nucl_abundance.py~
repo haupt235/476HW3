@@ -1,5 +1,6 @@
 import readthrough as rt
 import matmods as mm
+import pdb 
 
 def dicsum(dic):
 	sum =0
@@ -13,7 +14,8 @@ def nucl_abundance(key):
 	"""returns A Z and atomic abundance of a key within matdict & kills the rob"""
 	matdict = mm.library_creator('matlib')
 	eledict = rt.library_creator('elelib')
-	answer_dict = {}	
+	answer_dict = {}
+	pdb.set_trace()	
 	if key in matdict:
 		smol = matdict[key]
 		atoms = smol['Mass Fraction']
@@ -22,7 +24,8 @@ def nucl_abundance(key):
 		N_final = {}
 		A={}
 		N_total = {}
-		for i in atoms:			
+		isos = []
+		for i in atoms.keys():			
 			wo = atoms[i][0]
 			atom = atoms[i][1]
 			element_data = eledict[i]
@@ -33,19 +36,19 @@ def nucl_abundance(key):
 			N_i[i] = {}
 			A[i] = {}
 			
-			for j in isos:
+			for j in isos.keys():
 				percent_abundance = isos[j][0]
 				A[i].update({j:element_data['Z']})
 				N_i[i].update({j:float(rho)*float(wo)/100*float(percent_abundance)/float(molar)})			
 			N_total[i] = dicsum(N_i[i])	
 		
 		io={}
-		for l in N_i:
-			io[l] = {}
-			for m in N_i:
-				io[l][m] = N_i[l][m]/N_total[l]
-		for n in atoms:
-			answer_dict[n] = {}
-			for m in A[n]:
-				answer_dict[n].update({i+str(j[0]): [A[n][m],j[0],io[n][m]]}) 
+		for i in N_i:
+			io[i] = {}
+			for j in N_i[i]:
+				io[i][j] = N_i[i][j]/N_total[i]
+		for i in atoms:
+			answer_dict[i] = {}
+			for j in A[i]:
+				answer_dict[i].update({j: [A[i][j],j[0],io[i][j]]}) 
 		return {key: answer_dict}
